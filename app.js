@@ -62,16 +62,15 @@ io.on("connection", async (socket) => {
     socket.on("cancel-game", (data)=>{
         const { username, id, mode, room } = data;
         console.log("IN CANCEL");
-        if(users_count[mode]!==0){
-            users_count[mode] -= 1;
-            socket.leave(room);
-        }
         let room_size = 0;
         if(io.sockets.adapter.rooms.has(room)){
             room_size = io.sockets.adapter.rooms.get(room).size;
-        }
+            if(room===last_room[mode]){
+                socket.leave(room);
+                users_count[mode] = room_size;
+            }
+        }        
         console.log("ROOM SIZE : ", room_size);
-        users_count[mode] = room_size;
         console.log(users_count[mode]);
     })
     console.log("IN_SOCKET", socket.id);
