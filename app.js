@@ -30,10 +30,12 @@ app.get("/", (req, res) => {
 // Text Route
 app.get("/text", async (req, res) => {
     try{
-        let mode = req.query.mode!==undefined ? req.query.mode : "0";
+        console.log(req.query.mode);
+        let mode = req.query.mode==="undefined" ? "0" : req.query.mode;
         if(isNaN(parseInt(mode)))throw new BadRequestError("query parameter mode is not an integer");
         mode = parseInt(mode);
         if(mode<0 || mode>2)throw new BadRequestError("query parameter mode is not valid integer");
+        console.log(mode);
         mode = (mode<=0 ? 0 : mode>=2 ? 2 : 1);
         const response = await getSentence(mode);
         res.json({response});
