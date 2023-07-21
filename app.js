@@ -39,7 +39,7 @@ io.on("connection", async (socket) => {
         const room_size = io.sockets.adapter.rooms.get(last_room[mode]).size;
         console.log("ROOM SIZE : ", room_size);
         users_count[mode] = room_size;
-        socket.emit("assigned-room", { room : last_room[mode] });
+        socket.emit("assigned-room", { room : last_room[mode], player : room_size });
         if(users_count[mode]==users_in_room){
             info = {
                 room: last_room[mode],
@@ -65,11 +65,10 @@ io.on("connection", async (socket) => {
         let room_size = 0;
         if(io.sockets.adapter.rooms.has(room)){
             room_size = io.sockets.adapter.rooms.get(room).size;
-            if(room===last_room[mode]){
-                socket.leave(room);
-                users_count[mode] = room_size;
-            }
-        }        
+            socket.leave(room);
+            if(room===last_room[mode])users_count[mode] = room_size;
+            io.to(room).emit("player-count", { player : room_size-1 });
+        }
         console.log("ROOM SIZE : ", room_size);
         console.log(users_count[mode]);
     })
