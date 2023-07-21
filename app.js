@@ -43,7 +43,7 @@ io.on("connection", async (socket) => {
         if(room_size==users_in_room){
             info = {
                 room: last_room[mode],
-                text: await getSentence(),
+                text: await getSentence(mode, type = 0),
             }
             console.log("BROADCAST GAME STARTED");
             io.to(last_room[mode]).emit("get-started", info);
