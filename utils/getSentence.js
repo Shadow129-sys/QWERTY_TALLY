@@ -3,7 +3,7 @@ const URL = "https://api.quotable.io/quotes/random?limit=15&minLength=100&maxLen
 
 // mode = 0, Easy | mode = 1, Medium | mode = 2, Hard
 const Mode_Based = (results, mode = 0) => {
-    if(mode!==2)results = results.replace("."," ").replace(","," ").replace(/  +/g, ' ');
+    if(mode!==2)results = results.replace("."," ").replace(","," ").replace(/ {2,3}/g, ' ');
     if(mode===0){
         results = results.toLowerCase().split("");
         results = results.filter(e => ((e>='a' && e<='z') || e===' ')).join("");
